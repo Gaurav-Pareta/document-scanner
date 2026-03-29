@@ -42,12 +42,15 @@ def process_single_image(image_path: str, mode: str, output_path: str, visualize
         print(f"[Error] {e}")
         return 2
 
+
+
     try:
         U.save_image(output_path, enhanced)
         print(f"[OK] Saved scan to: {output_path}")
     except Exception as e:
         print(f"[Error] {e}")
         return 3
+
 
     if visualize:
         preview = U.draw_contour(image, contour)
@@ -59,15 +62,18 @@ def process_single_image(image_path: str, mode: str, output_path: str, visualize
     return 0
 
 
+
 def process_webcam(mode: str, output_dir: str, camera_index: int) -> int:
     cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
         print("[Error] Unable to access webcam.")
         return 1
 
+
     print("Webcam mode: press 's' to scan/save, 'q' to quit.")
     scanner = DocumentScanner()
     U.ensure_dir(output_dir)
+
 
     while True:
         ok, frame = cap.read()
@@ -75,10 +81,13 @@ def process_webcam(mode: str, output_dir: str, camera_index: int) -> int:
             print("[Error] Failed to read frame from webcam.")
             break
 
+
         frame_disp = U.resize_to_max_width(frame, cfg.WEBCAM_FRAME_MAX_WIDTH)
         preview = frame_disp.copy()
 
-        # Preview uses same multi-strategy detector as scan (downscaled inside detector)
+
+        # Preview uses same multi-strategy detector as scan 
+        
         try:
             contour_pts = scanner.detect_document_quad(frame_disp)
             if contour_pts is not None:
@@ -99,7 +108,8 @@ def process_webcam(mode: str, output_dir: str, camera_index: int) -> int:
                 U.save_image(save_path, enhanced)
                 print(f"[OK] Saved scan to: {save_path}")
 
-                # Show result until any key is pressed
+                
+                
                 preview_full = U.draw_contour(frame, contour)
                 stacked = U.stack_side_by_side(preview_full, enhanced)
                 stacked = U.resize_to_max_width(stacked, 1200)
@@ -114,6 +124,7 @@ def process_webcam(mode: str, output_dir: str, camera_index: int) -> int:
     return 0
 
 
+
 def main() -> int:
     args = parse_args()
     if not args.image and not args.webcam:
@@ -125,6 +136,7 @@ def main() -> int:
     else:
         out_dir = os.path.dirname(args.output) or "."
         return process_webcam(args.mode, out_dir, args.camera)
+
 
 
 if __name__ == "__main__":

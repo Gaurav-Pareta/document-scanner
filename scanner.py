@@ -1,10 +1,7 @@
 from __future__ import annotations
-
 from typing import Generator, List, Optional, Tuple
-
 import cv2
 import numpy as np
-
 import config as cfg
 
 
@@ -14,10 +11,10 @@ class DocumentScanner:
     Uses multiple edge maps, morphology, convex hull / min-area-rectangle fallbacks,
     and optional multi-scale detection for robustness.
     """
-
+                        
     def __init__(self) -> None:
         pass
-
+                                          
     def preprocess(self, image: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Convert to grayscale and blur; return (gray, blurred)."""
         if image is None or image.size == 0:
@@ -25,17 +22,17 @@ class DocumentScanner:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, cfg.GAUSSIAN_BLUR_KERNEL, cfg.GAUSSIAN_BLUR_SIGMA)
         return gray, blurred
-
+                                       
     def detect_edges(self, blurred: np.ndarray) -> np.ndarray:
         """Compute Canny edges from a blurred grayscale image (fixed thresholds)."""
         return cv2.Canny(blurred, cfg.CANNY_THRESHOLD_1, cfg.CANNY_THRESHOLD_2)
-
+                                                                                
     def _safe_find_contours(self, image: np.ndarray, mode: int, method: int) -> List[np.ndarray]:
         result = cv2.findContours(image, mode, method)
         if len(result) == 3:
             return result[1]
         return result[0]
-
+                                                     
     def _postprocess_edges(self, edges: np.ndarray) -> np.ndarray:
         k = max(3, int(cfg.EDGE_CLOSE_KERNEL_SIZE))
         if k % 2 == 0:
@@ -46,6 +43,7 @@ class DocumentScanner:
         if it > 0:
             closed = cv2.dilate(closed, kernel, iterations=it)
         return closed
+                       
 
     def _canny_auto(self, blurred: np.ndarray) -> Tuple[int, int]:
         med = float(np.median(blurred))
@@ -54,7 +52,7 @@ class DocumentScanner:
         if hi <= lo:
             hi = min(255, lo + 1)
         return lo, hi
-
+                                                 
     def _iter_edge_maps(self, gray: np.ndarray) -> Generator[np.ndarray, None, None]:
         blurred = cv2.GaussianBlur(gray, cfg.GAUSSIAN_BLUR_KERNEL, cfg.GAUSSIAN_BLUR_SIGMA)
         lo, hi = self._canny_auto(blurred)
@@ -63,15 +61,15 @@ class DocumentScanner:
             cv2.Canny(blurred, cfg.CANNY_THRESHOLD_1, cfg.CANNY_THRESHOLD_2)
         )
         yield self._postprocess_edges(cv2.Canny(blurred, lo, hi))
-
+                                                
         bil = cv2.bilateralFilter(
             gray,
             cfg.BILATERAL_D,
             cfg.BILATERAL_SIGMA_COLOR,
             cfg.BILATERAL_SIGMA_SPACE,
-        )
+        )                        
         yield self._postprocess_edges(cv2.Canny(bil, lo, hi))
-
+                                                      
         adaptive = cv2.adaptiveThreshold(
             blurred,
             255,
@@ -81,7 +79,7 @@ class DocumentScanner:
             2,
         )
         yield self._postprocess_edges(cv2.Canny(adaptive, 50, 150))
-
+                                                                                 
     def _resize_for_detection(self, image: np.ndarray, scale: float) -> Tuple[np.ndarray, float, float]:
         h, w = image.shape[:2]
         ms = cfg.DETECTION_MAX_SIDE
@@ -97,17 +95,17 @@ class DocumentScanner:
         sx = w / float(nw)
         sy = h / float(nh)
         return small, sx, sy
-
+                                         
     def _scale_quad_to_full(self, pts: np.ndarray, sx: float, sy: float) -> np.ndarray:
         out = pts.astype(np.float32).copy()
         out[:, 0] *= sx
         out[:, 1] *= sy
         return out
-
+                             
     def _quad_area_ratio(self, pts: np.ndarray, image_area: float) -> float:
         c = pts.reshape(-1, 1, 2).astype(np.float32)
         return abs(cv2.contourArea(c)) / max(image_area, 1.0)
-
+                            
     def _quad_passes_geometry(self, pts: np.ndarray, image_area: float, min_dim_px: float) -> bool:
         if pts.shape != (4, 2):
             return False
@@ -124,21 +122,21 @@ class DocumentScanner:
         if ar > cfg.MAX_QUAD_ASPECT_RATIO:
             return False
         return True
-
+                                                           
     def _quad_from_contour(
         self, contour: np.ndarray, image_area: float, min_dim_px: float
     ) -> Optional[np.ndarray]:
         peri = cv2.arcLength(contour, True)
         if peri < 1e-6:
             return None
-
+                                        
         for eps in cfg.CONTOUR_APPROX_EPSILON_FACTORS:
             approx = cv2.approxPolyDP(contour, float(eps) * peri, True)
             if len(approx) == 4:
                 p = approx.reshape(4, 2).astype(np.float32)
                 if self._quad_passes_geometry(p, image_area, min_dim_px):
                     return p
-
+                                                                             
         if len(contour) >= 4:
             hull = cv2.convexHull(contour)
             if hull is not None and len(hull) >= 4:
@@ -149,7 +147,7 @@ class DocumentScanner:
                         p = approx.reshape(4, 2).astype(np.float32)
                         if self._quad_passes_geometry(p, image_area, min_dim_px):
                             return p
-
+                                                                                      
         rect = cv2.minAreaRect(contour)
         (rw, rh) = rect[1]
         if rw < 1 or rh < 1:
@@ -164,7 +162,7 @@ class DocumentScanner:
         if self._quad_passes_geometry(box, image_area, min_dim_px):
             return box
         return None
-
+          
     def _quad_score(self, pts: np.ndarray, image_area: float) -> float:
         return self._quad_area_ratio(pts, image_area)
 
@@ -195,7 +193,7 @@ class DocumentScanner:
                     best = quad
 
         return best
-
+                                                                    
     def detect_document_quad(self, image: np.ndarray) -> Optional[np.ndarray]:
         """
         Full multi-strategy detection. Returns 4x2 float32 corners in image coordinates, or None.
@@ -211,7 +209,7 @@ class DocumentScanner:
                 if quad is not None:
                     return self._scale_quad_to_full(quad, sx, sy)
         return None
-
+  
     def find_document_contour(self, image: np.ndarray, edges: np.ndarray) -> Optional[np.ndarray]:
         """
         Find a document quadrilateral using a single precomputed edge map (post-processed).
@@ -244,7 +242,7 @@ class DocumentScanner:
         height_a = np.linalg.norm(tr - br)
         height_b = np.linalg.norm(tl - bl)
         max_h = int(max(height_a, height_b))
-
+                               
         max_w = max(max_w, 1)
         max_h = max(max_h, 1)
 
@@ -296,3 +294,6 @@ class DocumentScanner:
             raise ValueError("Perspective transform produced an empty image.")
         enhanced = self.enhance(warped, enhancement_mode)
         return enhanced, contour_pts.reshape(-1, 1, 2).astype(np.int32)
+
+         
+         
