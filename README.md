@@ -1,169 +1,165 @@
-# Document Scanner and Enhancer
+# 📄 Document Scanner and Enhancer
 
-A command-line tool that uses classical computer vision (OpenCV) to find a document in a photo, apply a perspective correction (homography), and save an enhanced “scan” (adaptive threshold, grayscale, or sharpen).
-
-Use this document if you have never seen the project before: it explains how to set up the environment, install dependencies, configure optional settings, and run everything from a terminal.
+A simple Computer Vision project that detects a document in an image, corrects its perspective, and converts it into a clean scanned version using OpenCV.
 
 ---
 
-## Prerequisites
+## 🎯 What This Project Does
 
-- **Python** 3.9 or newer (3.10+ recommended).
-- **pip** (comes with Python on Windows/macOS; on Linux, install `python3-pip` if needed).
-- A **terminal** (PowerShell, Command Prompt, or bash). All normal usage is driven by command-line arguments.
-- **Optional:** a webcam only if you use `--webcam`. Image-only runs need no camera.
-
-No separate database, API keys, or GUI installer are required.
+* Detects a document from an image or webcam
+* Fixes perspective (like CamScanner)
+* Enhances the output (black & white, grayscale, sharpen)
+* Saves the final scanned image
 
 ---
 
-## 1. Get the code
+## ⚙️ Requirements
 
-Clone the repository or extract the project folder. Open a terminal and go to the **repository root** (the folder that contains `main.py`, `requirements.txt`, and this `README.md`).
+* Python 3.9 or above
+* pip (Python package manager)
+* Terminal / Command Prompt
+
+---
+
+## 📥 Installation
+
+### 1. Open project folder
 
 ```bash
-cd path/to/document_scanner
+cd document_scanner
 ```
 
----
+### 2. (Optional but recommended) Create virtual environment
 
-## 2. Virtual environment (recommended)
+**Windows:**
 
-Isolating dependencies avoids conflicts with other Python projects.
-
-**Windows (PowerShell):**
-
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.venv\Scripts\activate
 ```
 
-**Windows (Command Prompt):**
-
-```cmd
-python -m venv .venv
-.venv\Scripts\activate.bat
-```
-
-**macOS / Linux:**
+**macOS/Linux:**
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-You should see the virtual environment name in your shell prompt. To leave the environment later, run `deactivate`.
-
 ---
 
-## 3. Install dependencies
-
-With the virtual environment activated (if you use one):
+### 3. Install dependencies
 
 ```bash
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-This installs **OpenCV** (`opencv-python`) and **NumPy**, which are required.
-
 ---
 
-## 4. Configuration (optional)
+## ▶️ How to Run
 
-Default behavior is controlled in `config.py` (blur sizes, Canny thresholds, output folder names, etc.). You do **not** need to change anything for a first run.
-
-- Default output directory: `output/`
-- Default output filename when using `--image`: `output/scan.png`
-
-Override the output path with `-o` / `--output` as shown below.
-
----
-
-## 5. Run the project (command line)
-
-The entry point is `main.py`. Show all options:
+### 🔹 Run with Image
 
 ```bash
-python main.py -h
+python main.py --image images/image1.png
 ```
 
-### 5.1 Process a single image (no GUI required)
-
-Put an image under `images/` (sample files may include `image1.png`, `image2.png`, `image3.jpeg`). Run **without** `--visualize` so no display window is needed (suitable for automated or SSH environments):
+### 🔹 Save Output with Custom Name
 
 ```bash
-python main.py --image images/image1.png --output output/scan.png --mode adaptive
+python main.py --image images/image1.png --output output/scan.png
 ```
 
-**Enhancement modes** (`--mode`):
-
-| Mode        | Description                          |
-|------------|---------------------------------------|
-| `adaptive` | Scan-like black and white (default)   |
-| `grayscale`| Grayscale output                      |
-| `sharpen`  | Color sharpen filter                  |
-
-If your environment has a display and you want a side-by-side preview window:
+### 🔹 Choose Enhancement Mode
 
 ```bash
-python main.py --image images/image1.png --output output/scan.png --visualize
-```
-
-Close the preview window when finished; the saved file remains on disk.
-
-### 5.2 Webcam mode (requires display and camera)
-
-```bash
-python main.py --webcam --mode adaptive
-```
-
-- Press **`s`** to capture the current frame, run the scanner, and save under `output/scan_YYYYMMDD_HHMMSS.png`.
-- Press **`q`** to quit.
-
-If you have multiple cameras, try another index:
-
-```bash
-python main.py --webcam --camera 1
+python main.py --image images/image1.png --mode adaptive
 ```
 
 ---
 
-## 6. Project layout
+## 🎨 Available Modes
+
+| Mode      | Description                  |
+| --------- | ---------------------------- |
+| adaptive  | Black & white scan (default) |
+| grayscale | Gray image                   |
+| sharpen   | Sharpened color image        |
+
+---
+
+## 📷 Webcam Mode (Optional)
+
+```bash
+python main.py --webcam
+```
+
+Controls:
+
+* Press **S** → Capture and scan
+* Press **Q** → Quit
+
+---
+
+## 📂 Project Structure
 
 ```
-.
-├── main.py          # CLI entry point
-├── scanner.py       # Detection, warp, enhancement
-├── utils.py         # I/O and visualization helpers
-├── config.py        # Tunable constants
-├── requirements.txt
-├── images/          # Place input images here
-└── output/          # Saved scans (created if missing)
+document_scanner/
+│
+├── main.py          # Runs the program
+├── scanner.py       # Core logic
+├── utils.py         # Helper functions
+├── config.py        # Parameters
+├── images/          # Input images
+└── output/          # Saved results
 ```
 
 ---
 
-## 7. Troubleshooting
+## ⚠️ Common Issues
 
-| Issue | What to try |
-|--------|----------------|
-| `No document detected` | Use a photo where the full page edges are visible with decent contrast; avoid heavy glare. |
-| `Image not found` | Check the path to `--image`; use quotes if the path contains spaces. |
-| `Unable to access webcam` | Close other apps using the camera; try `--camera 0`, `1`, or `2`. |
-| Import errors | Ensure the virtual environment is activated and `pip install -r requirements.txt` completed successfully. |
+**1. No document detected**
+
+* Use clear images
+* Ensure full document is visible
+
+**2. Image not loading**
+
+* Check file path
+* Use correct file name
+
+**3. Webcam not working**
+
+* Close other apps using camera
+* Try different camera index
 
 ---
 
-## Concepts used
+## 🧠 Concepts Used
 
-- Grayscale, Gaussian blur, bilateral filtering  
-- Canny edges, morphology, contour finding, quadrilateral approximation  
-- Point ordering and homography (`getPerspectiveTransform`, `warpPerspective`)  
-- Adaptive thresholding and simple sharpening  
+* Image preprocessing (grayscale, blur)
+* Edge detection (Canny)
+* Contour detection
+* Perspective transform (Homography)
+* Image enhancement (thresholding, sharpening)
 
 ---
 
-## License
+## 🏁 Output
+
+The scanned image will be saved in:
+
+```
+output/
+```
+
+---
+
+## 📌 Summary
+
+This project demonstrates how classical computer vision techniques can be used to build a real-world application like a document scanner without using heavy deep learning models.
+
+---
+
+## 📜 License
 
 MIT

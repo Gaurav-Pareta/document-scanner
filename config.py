@@ -37,7 +37,7 @@ WARP_BORDER_MODE = 1  # cv2.BORDER_CONSTANT
 WARP_BORDER_VALUE = (0, 0, 0)
 
 # Enhancement
-ADAPTIVE_THRESH_BLOCK_SIZE = 25  # must be odd and > 1 (code will enforce oddness)
+ADAPTIVE_THRESH_BLOCK_SIZE = 25  # must be odd and > 1 
 ADAPTIVE_THRESH_C = 15
 SHARPEN_KERNEL = [
     [-1, -1, -1],
