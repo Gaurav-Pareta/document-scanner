@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 ### 🔹 Run with Image
 
@@ -77,7 +77,7 @@ python main.py --image images/image1.png --mode adaptive
 
 ---
 
-## 🎨 Available Modes
+## Available Modes
 
 | Mode      | Description                  |
 | --------- | ---------------------------- |
@@ -87,7 +87,7 @@ python main.py --image images/image1.png --mode adaptive
 
 ---
 
-## 📷 Webcam Mode (Optional)
+## Webcam Mode (Optional)
 
 ```bash
 python main.py --webcam
@@ -134,7 +134,7 @@ document_scanner/
 
 ---
 
-## 🧠 Concepts Used
+## Concepts Used
 
 * Image preprocessing (grayscale, blur)
 * Edge detection (Canny)
@@ -144,7 +144,7 @@ document_scanner/
 
 ---
 
-## 🏁 Output
+## Output
 
 The scanned image will be saved in:
 
@@ -154,7 +154,7 @@ output/
 
 ---
 
-## 📌 Summary
+## Summary
 
 This project demonstrates how classical computer vision techniques can be used to build a real-world application like a document scanner without using heavy deep learning models.
 
