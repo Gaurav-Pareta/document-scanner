@@ -1,165 +1,153 @@
-# 📄 Document Scanner and Enhancer
+# 📄 Document Scanner and Enhancer         
 
 A simple Computer Vision project that detects a document in an image, corrects its perspective, and converts it into a clean scanned version using OpenCV.
+                   
+---
+                  
+## 🎯 Overview                        
+
+When documents are captured using a camera, they often appear tilted, distorted, or affected by shadows and background noise.
+                     
+This project solves that problem by:                             
+                   
+* Detecting the document automatically                   
+* Correcting its perspective (like CamScanner)                     
+* Enhancing it to produce a clean, readable output                          
+
+---                   
+                         
+## ✨ Features
+                            
+* Automatic document detection
+* Perspective correction (Homography)                                               
+* Edge detection using Canny
+* Contour detection for boundary extraction                     
+* Image enhancement (adaptive threshold, grayscale, sharpen)                        
+* Supports image and webcam input                             
+* Saves output automatically
+                          
+---
+                    
+## 🛠️ Technologies Used                
+
+* Python
+* OpenCV
+* NumPy                                    
 
 ---
-
-## 🎯 What This Project Does
-
-* Detects a document from an image or webcam
-* Fixes perspective (like CamScanner)
-* Enhances the output (black & white, grayscale, sharpen)
-* Saves the final scanned image
-
----
-
-## ⚙️ Requirements
-
-* Python 3.9 or above
-* pip (Python package manager)
-* Terminal / Command Prompt
-
----
-
-## 📥 Installation
-
-### 1. Open project folder
-
-```bash
-cd document_scanner
-```
-
-### 2. (Optional but recommended) Create virtual environment
-
-**Windows:**
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
-
-**macOS/Linux:**
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
----
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-##  How to Run
-
-### 🔹 Run with Image
-
-```bash
-python main.py --image images/image1.png
-```
-
-### 🔹 Save Output with Custom Name
-
-```bash
-python main.py --image images/image1.png --output output/scan.png
-```
-
-### 🔹 Choose Enhancement Mode
-
-```bash
-python main.py --image images/image1.png --mode adaptive
-```
-
----
-
-## Available Modes
-
-| Mode      | Description                  |
-| --------- | ---------------------------- |
-| adaptive  | Black & white scan (default) |
-| grayscale | Gray image                   |
-| sharpen   | Sharpened color image        |
-
----
-
-## Webcam Mode (Optional)
-
-```bash
-python main.py --webcam
-```
-
-Controls:
-
-* Press **S** → Capture and scan
-* Press **Q** → Quit
-
----
-
+                                               
 ## 📂 Project Structure
 
 ```
 document_scanner/
 │
-├── main.py          # Runs the program
+├── main.py          # Entry point
 ├── scanner.py       # Core logic
-├── utils.py         # Helper functions
+├── utils.py         # Helper functions                                        
 ├── config.py        # Parameters
 ├── images/          # Input images
 └── output/          # Saved results
 ```
 
----
+---                 
 
-## ⚠️ Common Issues
+## ⚙️ Installation
 
-**1. No document detected**
-
-* Use clear images
-* Ensure full document is visible
-
-**2. Image not loading**
-
-* Check file path
-* Use correct file name
-
-**3. Webcam not working**
-
-* Close other apps using camera
-* Try different camera index
-
----
-
-## Concepts Used
-
-* Image preprocessing (grayscale, blur)
-* Edge detection (Canny)
-* Contour detection
-* Perspective transform (Homography)
-* Image enhancement (thresholding, sharpening)
-
----
-
-## Output
-
-The scanned image will be saved in:
+### 1. Clone the repository                                                                  
 
 ```
-output/
+git clone https://github.com/your-username/document-scanner.git
+cd document-scanner
+```
+
+### 2. Install dependencies
+
+```
+pip install opencv-python numpy                                
 ```
 
 ---
 
-## Summary
+## ▶️ Usage
 
-This project demonstrates how classical computer vision techniques can be used to build a real-world application like a document scanner without using heavy deep learning models.
+### 🔹 Run with image
+                                         
+```
+python main.py --image images/doc1.jpg                                    
+```
+
+### 🔹 Run with webcam
+
+```
+python main.py --webcam
+```
+
+---
+                                  
+## 🎨 Modes
+
+| Mode      | Description                  |
+| --------- | ---------------------------- |
+| adaptive  | Black & white scan (default) |
+| grayscale | Gray image                   |
+| sharpen   | Sharpened image              |                          
+
+Example:
+                                     
+```
+python main.py --image images/doc1.jpg --mode adaptive
+```
 
 ---
 
+## 🧠 How It Works
+
+The system follows these steps:
+                                     
+1. Convert image to grayscale and apply blur
+2. Detect edges using Canny
+3. Find contours and select document
+4. Apply perspective transform (homography)
+5. Enhance image for better readability
+                          
+---
+
+## 📊 Results
+               
+The system works well for:
+
+* Flat documents
+* Tilted documents
+* Documents with shadows
+* Documents on different backgrounds
+
+The output is a clean, scan-like image.
+
+---
+
+## ⚠️ Limitations
+
+* May fail if document edges are not clear
+* Sensitive to poor lighting conditions                        
+* Not suitable for extremely distorted images
+
+---
+
+## 🚀 Future Improvements
+
+* GUI interface
+* PDF export
+* Better shadow removal
+* Deep learning-based detection
+
+---
+
+## 📌 Conclusion
+                                         
+This project demonstrates how classical Computer Vision techniques can be used to build a real-world application like a document scanner efficiently without using heavy models.
+
+---                                            
+                                                  
 ## 📜 License
 
 MIT
