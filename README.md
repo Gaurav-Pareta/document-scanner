@@ -1,40 +1,38 @@
-# 📄 Document Scanner and Enhancer         
+# 📄 Scanner and Enhancer of documents
 
-A simple Computer Vision project that detects a document in an image, corrects its perspective, and converts it into a clean scanned version using OpenCV.
-                   
+This is an easy Computer Vision project. The project automatically finds a document inside an image, corrects the perspective of that document so that it will look like a clean scanned document, and produces that result using OpenCV. 
+
 ---
-                  
-## 🎯 Overview                        
 
-When documents are captured using a camera, they often appear tilted, distorted, or affected by shadows and background noise.
-                     
-This project solves that problem by:                             
-                   
-* Detecting the document automatically                   
-* Correcting its perspective (like CamScanner)                     
-* Enhancing it to produce a clean, readable output                          
+## 🎯 Overview
 
----                   
-                         
-## ✨ Features
-                            
-* Automatic document detection
-* Perspective correction (Homography)                                               
-* Edge detection using Canny
-* Contour detection for boundary extraction                     
-* Image enhancement (adaptive threshold, grayscale, sharpen)                        
-* Supports image and webcam input                             
-* Saves output automatically
-                          
+Many times, when you take a photo of a document with your camera, it ends up being skewed/twisted, warped, or has shadows or background noise in it after you take a shot.
+
+This project will help to eliminate those issues with the following capabilities:
+
+* is able to find and identify the document from the image.
+* will allow you to adjust the perspective of the document in the same way as CamScanner would do.
+* is capable of enhancing the image produced of the document to create a clean and legible image. 
+
 ---
-                    
-## 🛠️ Technologies Used                
+
+## ✨ Features 
+
+* automatically finds a document in an image.
+* will allow you to correct artificial perspective (homography).
+* will allow you to use Canny edge detection to find the edges of the document.
+* contour detection can be used to extract outlines/boundaries of the document. 
+* enhancing the document image can be accomplished through the use of adaptive thresholding, grayscale, sharpening, and/or various other techniques.
+* takes pictures from either an image file or from a webcam.
+* automatically saves a copy of the output document image. 
+
+---
+
+## 🛠️ Technologies Used 
 
 * Python
 * OpenCV
-* NumPy                                    
-
----
+* NumPy
                                                
 ## 📂 Project Structure
 
@@ -100,54 +98,56 @@ python main.py --image images/doc1.jpg --mode adaptive
 
 ---
 
-## 🧠 How It Works
+## 🧠 The Workings of the System
+The system has a number of steps to create the scanned image:
 
-The system follows these steps:
-                                     
-1. Convert image to grayscale and apply blur
-2. Detect edges using Canny
-3. Find contours and select document
-4. Apply perspective transform (homography)
-5. Enhance image for better readability
-                          
+1) Convert image to greyscale and smooth (blur) the image.
+2) Use the Canny edge detector to detect edges in the image.
+3) Find the contours of the image so that we can select the document.
+4) Apply a perspective transformation to the document (homography).
+5) Enhance the document to ensure it is more readable.
+
 ---
 
-## 📊 Results
-               
-The system works well for:
+## 📊 Output
+Documents that the system will work on well:
 
 * Flat documents
 * Tilted documents
 * Documents with shadows
-* Documents on different backgrounds
+* Documents with different background
 
-The output is a clean, scan-like image.
+Results produced by the system are clean, scanned-like images.
 
 ---
 
 ## ⚠️ Limitations
 
-* May fail if document edges are not clear
-* Sensitive to poor lighting conditions                        
-* Not suitable for extremely distorted images
+The system may not perform well when:
+
+* The edge of the document is not clear to the camera.
+* The lighting is poor.
+* The documents are highly distorted.
 
 ---
 
 ## 🚀 Future Improvements
 
-* GUI interface
-* PDF export
+Some future changes will include:
+
+* A Graphical User Interface (GUI)
+* Ability to export to PDF
 * Better shadow removal
-* Deep learning-based detection
+* Using deep learning models to detect the documents.
 
 ---
 
 ## 📌 Conclusion
-                                         
-This project demonstrates how classical Computer Vision techniques can be used to build a real-world application like a document scanner efficiently without using heavy models.
 
----                                            
-                                                  
+In conclusion, this project demonstrates the ability to create a working application for scanning documents using classical Computer Vision techniques, using lightweight models.
+
+---
+
 ## 📜 License
 
 MIT
