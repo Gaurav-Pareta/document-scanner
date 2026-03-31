@@ -4,7 +4,7 @@ This is an easy Computer Vision project. The project automatically finds a docum
 
 ---
 
-## 🎯 Overview
+## Overview
 
 Many times, when you take a photo of a document with your camera, it ends up being skewed/twisted, warped, or has shadows or background noise in it after you take a shot.
 
@@ -16,7 +16,7 @@ This project will help to eliminate those issues with the following capabilities
 
 ---
 
-## ✨ Features 
+## Features 
 
 * automatically finds a document in an image.
 * will allow you to correct artificial perspective (homography).
@@ -28,13 +28,13 @@ This project will help to eliminate those issues with the following capabilities
 
 ---
 
-## 🛠️ Technologies Used 
+## Technologies Used 
 
 * Python
 * OpenCV
 * NumPy
                                                
-## 📂 Project Structure
+## Project Structure
 
 ```
 document_scanner/
@@ -49,7 +49,7 @@ document_scanner/
 
 ---                 
 
-## ⚙️ Installation
+## Installation
 
 ### 1. Clone the repository                                                                  
 
@@ -66,7 +66,7 @@ pip install opencv-python numpy
 
 ---
 
-## ▶️ Usage
+## Usage
 
 ### 🔹 Run with image
                                          
@@ -82,7 +82,7 @@ python main.py --webcam
 
 ---
                                   
-## 🎨 Modes
+## Modes
 
 | Mode      | Description                  |
 | --------- | ---------------------------- |
@@ -98,7 +98,7 @@ python main.py --image images/doc1.jpg --mode adaptive
 
 ---
 
-## 🧠 The Workings of the System
+## The Workings of the System
 The system has a number of steps to create the scanned image:
 
 1) Convert image to greyscale and smooth (blur) the image.
@@ -109,7 +109,7 @@ The system has a number of steps to create the scanned image:
 
 ---
 
-## 📊 Output
+## Output
 Documents that the system will work on well:
 
 * Flat documents
@@ -121,7 +121,7 @@ Results produced by the system are clean, scanned-like images.
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 The system may not perform well when:
 
@@ -131,7 +131,7 @@ The system may not perform well when:
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 Some future changes will include:
 
@@ -142,7 +142,7 @@ Some future changes will include:
 
 ---
 
-## 📌 Conclusion
+## Conclusion
 
 In conclusion, this project demonstrates the ability to create a working application for scanning documents using classical Computer Vision techniques, using lightweight models.
 
